@@ -4,8 +4,10 @@ class Enemy {
         this.speed = 2;
         this.path = path;
         this.pathIndex = 0;
-        this.x = path[0].x;
-        this.y = path[0].y;
+
+        // Adjust the initial position to the center of the path
+        this.x = path[0].x - 25;
+        this.y = path[0].y - 25;
         this.health = 100;
 
         // Initialize the image and set fallback properties
@@ -34,20 +36,31 @@ class Enemy {
 
     move() {
         let target = this.path[this.pathIndex];
-        let dx = target.x - this.x;
-        let dy = target.y - this.y;
+        let dx = target.x - (this.x + 25);  // Adjust for center alignment
+        let dy = target.y - (this.y + 25);  // Adjust for center alignment
         let distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < this.speed) {
             this.pathIndex++;
             if (this.pathIndex >= this.path.length) {
                 // Enemy reached the end of the path
-                this.health = 0;
+                this.reachEnd();  // Handle reaching the end
                 return;
             }
         } else {
             this.x += (dx / distance) * this.speed;
             this.y += (dy / distance) * this.speed;
         }
+    }
+
+    reachEnd() {
+        // Reduce the player's health by 10
+        if (health>0){
+            health -= 10
+        };
+        updateHealthDisplay();  // Update the health display on the screen
+
+        // Remove the enemy by setting its health to 0
+        this.health = 0;
     }
 }

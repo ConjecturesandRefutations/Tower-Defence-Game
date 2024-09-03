@@ -2,6 +2,8 @@ let towers = [];
 let enemies = [];
 let projectiles = [];
 
+
+let health = 100; // Start with 100 health
 let money = 100; // Start with 100 coins
 
 // Define the enemy path
@@ -15,6 +17,11 @@ const path = [
 // Update the displayed money count
 function updateMoneyDisplay() {
     document.getElementById('moneyCount').textContent = `Coins: ${money}`;
+}
+
+// Update the displayed health count
+function updateHealthDisplay() {
+    document.getElementById('healthCount').textContent = `Health: ${health}`;
 }
 
 // Draw the path in brown color

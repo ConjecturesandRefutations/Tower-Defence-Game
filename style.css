@@ -75,13 +75,21 @@ canvas {
     background-color: lightgreen;
 }
 
-#moneyCount {
+.info {
     position: absolute;
     top: 50%;
     left: 10%;
     transform: translate(0,-50%);
     font-size: 30px;
+    gap: 105px;
+}
+
+#moneyCount{
     color: gold;
+}
+
+#healthCount{
+    color: red;
 }
 
 .game-section {
