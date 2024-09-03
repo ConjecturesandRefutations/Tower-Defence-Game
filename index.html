@@ -7,11 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <section class="opening-section">
+        <h1>Tower Defence</h1>
+        <h3 id="start-button">Start Game</h3>
+    </section>
+
+    <section class="game-section">
+        <div id="moneyCount">Coins: 100</div>
+        <canvas id="gameCanvas"></canvas>
+    </section>
+
     <script src="canvas.js"></script>
     <script src="tower.js"></script>
     <script src="enemy.js"></script>
     <script src="projectile.js"></script>
     <script src="index.js"></script>
+    <script src="sections.js"></script>
 </body>
 </html>
