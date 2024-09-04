@@ -92,6 +92,10 @@ canvas {
     color: red;
 }
 
+#scoreCount{
+    color: white;
+}
+
 .game-section {
     display: none; /* Hide the game section by default */
 }

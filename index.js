@@ -2,16 +2,16 @@ let towers = [];
 let enemies = [];
 let projectiles = [];
 
-
 let health = 100; // Start with 100 health
 let money = 100; // Start with 100 coins
+let score = 0; // Start with 0 score
 
 // Define the enemy path
 const path = [
     { x: 100, y: -50 },
     { x: 100, y: 500 },
     { x: 700, y: 500 },
-    { x: 700, y: 0 }
+    { x: 700, y: -50 }
 ];
 
 // Update the displayed money count
@@ -22,6 +22,11 @@ function updateMoneyDisplay() {
 // Update the displayed health count
 function updateHealthDisplay() {
     document.getElementById('healthCount').textContent = `Health: ${health}`;
+}
+
+// Update the displayed health count
+function updateScoreDisplay() {
+    document.getElementById('scoreCount').textContent = `Score: ${score}`;
 }
 
 // Draw the path in brown color
@@ -37,28 +42,40 @@ function drawPath() {
     ctx.stroke();
 }
 
-// Spawn an enemy every 2 seconds
-setInterval(() => {
-    enemies.push(new Enemy(path));
-}, 2000);
+// Start the game
+function startGame() {
+    // Initial money display update
+    updateMoneyDisplay();
+    updateHealthDisplay();
+    updateScoreDisplay();
 
-canvas.addEventListener('click', (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    // Spawn an enemy every 2 seconds
+    setInterval(() => {
+        enemies.push(new Enemy(path));
+    }, 2000);
 
-    const gridX = Math.floor(x / gridSize) * gridSize;
-    const gridY = Math.floor(y / gridSize) * gridSize;
+    // Set up the canvas click event for placing towers
+    canvas.addEventListener('click', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
 
-    // Check if the player has enough money to build a tower
-    if (money >= 10) {
-        towers.push(new Tower(gridX, gridY));
-        money -= 10; // Reduce money by 10
-        updateMoneyDisplay(); // Update the money display
-    } else {
-        alert('Not enough money to build a tower!');
-    }
-});
+        const gridX = Math.floor(x / gridSize) * gridSize;
+        const gridY = Math.floor(y / gridSize) * gridSize;
+
+        // Check if the player has enough money to build a tower
+        if (money >= 10) {
+            towers.push(new Tower(gridX, gridY));
+            money -= 10; // Reduce money by 10
+            updateMoneyDisplay(); // Update the money display
+        } else {
+            alert('Not enough money to build a tower!');
+        }
+    });
+
+    // Start the game loop
+    gameLoop();
+}
 
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -67,11 +84,19 @@ function gameLoop() {
     drawPath();
 
     // Draw and move enemies
-    enemies = enemies.filter(enemy => enemy.health > 0);
-    enemies.forEach(enemy => {
+    for (let i = enemies.length - 1; i >= 0; i--) {
+        const enemy = enemies[i];
         enemy.move();
         enemy.draw();
-    });
+
+        if (enemy.health <= 0) {
+            if (!enemy.reachedEnd) {
+                score += 1;  // Increase score if the enemy was destroyed by a projectile
+                updateScoreDisplay();  // Update the score display on the screen
+            }
+            enemies.splice(i, 1);  // Remove the enemy directly if health is 0
+        }
+    }
 
     // Draw and shoot with towers
     towers.forEach(tower => {
@@ -84,9 +109,9 @@ function gameLoop() {
     projectiles.forEach(projectile => projectile.draw());
 
     requestAnimationFrame(gameLoop);
+    console.log(enemies.length)
 }
 
-// Initial money display update
-updateMoneyDisplay();
 
-gameLoop();
+
+

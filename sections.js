@@ -6,5 +6,6 @@ window.onload = () => {
     startButton.onclick = () => { 
         gameSection.style.display = 'block'; // Make the game section visible
         openingSection.style.display = 'none'; // Hide the opening section
+        startGame(); // Start the game
     };
 };
