@@ -44,6 +44,7 @@ function drawPath() {
 
 // Start the game
 function startGame() {
+
     // Initial money display update
     updateMoneyDisplay();
     updateHealthDisplay();
@@ -77,8 +78,21 @@ function startGame() {
     gameLoop();
 }
 
+function gameOver() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '48px Arial';
+    ctx.fillStyle = 'red';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+}
+
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (health <= 0) {
+        gameOver();
+        return; // Stop the game loop
+    }
 
     // Draw the path
     drawPath();
