@@ -53,6 +53,7 @@ function drawPath() {
 document.querySelector('.standard-tower').addEventListener('click', () => {
     selectedTower = 'standard'; // Set selectedTower to 'standard' when clicked
     document.querySelector('.standard-tower').classList.add('selected');
+    noTowerSelected.style.display = 'none';
 });
 
 // Start the game
@@ -72,7 +73,7 @@ function startGame() {
 // Canvas click event for placing towers
 canvas.addEventListener('click', (event) => {
     if (!selectedTower) {
-        alert('Please select a tower to place!');
+        noTowerSelected.style.display = 'block';
         return;
     }
 

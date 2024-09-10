@@ -117,6 +117,8 @@ canvas {
 
 .tower-select p{
     color: red;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgb(68, 39, 39) !important;
 }
 
 .tower-image-and-stats{
@@ -134,4 +136,19 @@ canvas {
     padding: 2px;
     border-radius: 5px;
     background: rgb(58, 58, 58);
+}
+
+.no-tower-selected{
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: black;
+    background: red;
+    font-size: 28px;
+    margin: 0;
+    padding: 0;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: times new roman;
 }
