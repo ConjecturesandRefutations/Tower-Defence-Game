@@ -6,6 +6,8 @@ let health = 100; // Start with 100 health
 let money = 100; // Start with 100 coins
 let score = 0; // Start with 0 score
 
+let selectedTower = null;
+
 // Define the enemy path
 const path = [
     { x: 100, y: -50 },
@@ -47,6 +49,12 @@ function drawPath() {
     ctx.stroke();
 }
 
+// Event listener to the tower selection box
+document.querySelector('.standard-tower').addEventListener('click', () => {
+    selectedTower = 'standard'; // Set selectedTower to 'standard' when clicked
+    document.querySelector('.standard-tower').classList.add('selected');
+});
+
 // Start the game
 function startGame() {
 
@@ -59,26 +67,34 @@ function startGame() {
     // Spawn an enemy every 2 seconds
     setInterval(() => {
         enemies.push(new Enemy(path));
-    }, 1000);
+    }, 2000);
 
-    // Set up the canvas click event for placing towers
-    canvas.addEventListener('click', (event) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+// Canvas click event for placing towers
+canvas.addEventListener('click', (event) => {
+    if (!selectedTower) {
+        alert('Please select a tower to place!');
+        return;
+    }
 
-        const gridX = Math.floor(x / gridSize) * gridSize;
-        const gridY = Math.floor(y / gridSize) * gridSize;
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
-        // Check if the player has enough money to build a tower
-        if (money >= 10) {
-            towers.push(new Tower(gridX, gridY));
-            money -= 10; // Reduce money by 10
-            updateMoneyDisplay(); // Update the money display
-        } else {
-            alert('Not enough money to build a tower!');
-        }
-    });
+    const gridX = Math.floor(x / gridSize) * gridSize;
+    const gridY = Math.floor(y / gridSize) * gridSize;
+
+    // Check if the player has enough money to build a tower
+    if (money >= 10) {
+        // Place the selected tower
+        towers.push(new Tower(gridX, gridY));
+
+        // Reduce money by the cost of the tower
+        money -= 10;
+        updateMoneyDisplay();
+    } else {
+        alert('Not enough money to build a tower!');
+    }
+});
 
     // Start the game loop
     gameLoop();
