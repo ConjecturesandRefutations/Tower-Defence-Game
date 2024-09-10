@@ -99,3 +99,7 @@ canvas {
 .game-section {
     display: none; /* Hide the game section by default */
 }
+
+.game-over{
+    display: none;
+}

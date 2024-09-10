@@ -1,5 +1,7 @@
 const openingSection = document.querySelector('.opening-section');
 const gameSection = document.querySelector('.game-section');
+const gameOverSection = document.querySelector('.game-over');
+
 
 window.onload = () => {
     const startButton = document.getElementById('start-button');

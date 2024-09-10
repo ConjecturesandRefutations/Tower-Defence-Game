@@ -24,9 +24,14 @@ function updateHealthDisplay() {
     document.getElementById('healthCount').textContent = `Health: ${health}`;
 }
 
-// Update the displayed health count
+// Update the displayed score count
 function updateScoreDisplay() {
     document.getElementById('scoreCount').textContent = `Score: ${score}`;
+}
+
+// Update the displayed final score count
+function updateFinalScoreDisplay() {
+    document.getElementById('finalScore').textContent = `${score}`;
 }
 
 // Draw the path in brown color
@@ -49,11 +54,12 @@ function startGame() {
     updateMoneyDisplay();
     updateHealthDisplay();
     updateScoreDisplay();
+    updateFinalScoreDisplay();
 
     // Spawn an enemy every 2 seconds
     setInterval(() => {
         enemies.push(new Enemy(path));
-    }, 2000);
+    }, 1000);
 
     // Set up the canvas click event for placing towers
     canvas.addEventListener('click', (event) => {
@@ -79,11 +85,9 @@ function startGame() {
 }
 
 function gameOver() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = '48px Arial';
-    ctx.fillStyle = 'red';
-    ctx.textAlign = 'center';
-    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+    gameSection.style.display = 'none';
+    gameOverSection.style.display =  'block';
+    updateFinalScoreDisplay();
 }
 
 function gameLoop() {
@@ -123,7 +127,6 @@ function gameLoop() {
     projectiles.forEach(projectile => projectile.draw());
 
     requestAnimationFrame(gameLoop);
-    console.log(enemies.length)
 }
 
 
