@@ -84,17 +84,20 @@ canvas.addEventListener('click', (event) => {
     const gridX = Math.floor(x / gridSize) * gridSize;
     const gridY = Math.floor(y / gridSize) * gridSize;
 
-    // Check if the player has enough money to build a tower
-    if (money >= 10) {
-        // Place the selected tower
-        towers.push(new Tower(gridX, gridY));
-
-        // Reduce money by the cost of the tower
-        money -= 10;
-        updateMoneyDisplay();
-    } else {
-        noMoney.style.display = 'block';
-    }
+// Check if the player has enough money to build a tower
+if (money >= 10) {
+    // Place the selected tower
+    towers.push(new Tower(gridX, gridY));
+    // Reduce money by the cost of the tower
+    money -= 10;
+    updateMoneyDisplay();
+} else {
+    noMoney.style.display = 'block';
+    // Set timeout to hide the element after 3 seconds (3000ms)
+    setTimeout(() => {
+        noMoney.style.display = 'none';
+    }, 3000);
+}
 });
 
     // Start the game loop

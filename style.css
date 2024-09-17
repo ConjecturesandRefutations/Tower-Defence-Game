@@ -142,7 +142,7 @@ canvas {
     display: none;
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     color: black;
     background: red;
     font-size: 28px;
