@@ -106,7 +106,7 @@ canvas {
 
 .tower-select{
     position: absolute;
-    right: 50px;
+    right: 20px;
     top: 50px
 }
 
@@ -138,7 +138,7 @@ canvas {
     background: rgb(58, 58, 58);
 }
 
-.no-tower-selected{
+.no-tower-selected, .no-money{
     display: none;
     position: absolute;
     bottom: 20px;

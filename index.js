@@ -93,7 +93,7 @@ canvas.addEventListener('click', (event) => {
         money -= 10;
         updateMoneyDisplay();
     } else {
-        alert('Not enough money to build a tower!');
+        noMoney.style.display = 'block';
     }
 });
 

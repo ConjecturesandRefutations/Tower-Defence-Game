@@ -2,7 +2,7 @@ const gridSize = 50;
 
 // Load the tower image globally
 const towerImage = new Image();
-towerImage.src = 'Assets/Images/Starting-Tower.png';
+towerImage.src = 'Assets/Images/Mud-Tower.png';
 let towerImageLoaded = false;
 
 // Set a global flag when the image has loaded
