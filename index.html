@@ -3,46 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Tower Defense Game</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tower Crash</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    
     <section class="opening-section">
-        <h1>Tower Defence</h1>
+        <h1>Tower Clash</h1>
         <h3 id="start-button">Start Game</h3>
     </section>
 
-    <section class="game-section">
-        <article class="info">
-            <div id="scoreCount">Score: 0</div>
-            <div id="moneyCount">Coins: 100</div>
-            <div id="healthCount">Health: 100</div>
-        </article>
-        <canvas id="gameCanvas"></canvas>
-        <article class="tower-select">
-            <h4 class="select-heading" style="color: red;">Select Tower</h4>
-            <div class="tower-image-and-stats standard-tower" id="standard-tower">
-                <img style="height: 100px; width: auto;" src="Assets/Images/Mud-Tower.png"></img>
-                <div class="standard-tower-stats">
-                    <p>Damage: 1</p>
-                    <p>Speed: 1</p>
-                    <p>Cost: 10</p>
+    <div class="container game-section">
+        <main class="game-canvas">
+            <canvas id="gameCanvas"></canvas>
+        </main>        
+        <aside class="sidebar">
+            <article class="tower-select">
+                <h4 class="select-heading" style="color: red;">Select Tower</h4>
+                <div class="tower-image-and-stats mud-tower" id="mud-tower">
+                    <img style="height: 100px; width: auto;" src="Assets/Images/Mud-Tower.png"></img>
+                    <div class="tower-stats">
+                        <p>Damage: 1</p>
+                        <p>Speed: 1</p>
+                        <p>Cost: 10</p>
+                    </div>
+                </div>
+                <div class="tower-image-and-stats medieval-tower" id="medieval-tower">
+                    <img style="height: 100px; width: auto;" src="Assets/Images/Medieval-Tower.png"></img>
+                    <div class="tower-stats">
+                        <p>Damage: 2</p>
+                        <p>Speed: 2</p>
+                        <p>Cost: 20</p>
+                    </div>
+                </div>
+            </article>
+        </aside>
+        <footer class="footer">
+
+            <!-- Counters -->
+            <div class="info counters">
+                <div id="scoreCount">Score: 0</div>
+                <div id="moneyCount">Coins: 100</div>
+                <div id="healthCount">Health: 100</div>
+            </div>
+
+            <!-- Alerts -->
+            <div class="alerts">
+                <div class="no-tower-selected">
+                    <p>No Tower Selected!</p>
+                </div>
+                <div class="no-money">
+                    <p>Not enough money!</p>
                 </div>
             </div>
-        </article>
-        <article class="no-tower-selected">
-            <h4>No Tower Selected!</h4>
-        </article>
-        <article class="no-money">
-            <h4>Not enough money!</h4>
-        </article>
-    </section>
+        </footer>
+    </div>
 
     <section class="game-over">
-        <h1 id="died">You died</h1>
+        <h3 id="died">You died</h3> 
         <h3 id="final-score">Score <span id="finalScore"></span></h3><br>
     </section>
-
+    
     <script src="canvas.js"></script>
     <script src="tower.js"></script>
     <script src="enemy.js"></script>

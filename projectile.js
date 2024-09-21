@@ -1,8 +1,9 @@
 class Projectile {
-    constructor(x, y, target) {
+    constructor(x, y, target, damage) {
         this.x = x;
         this.y = y;
         this.target = target;
+        this.damage = damage; // Add damage property
         this.speed = 5;
     }
 
@@ -19,7 +20,7 @@ class Projectile {
         let distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < this.speed) {
-            this.target.health -= 50;
+            this.target.health -= this.damage; // Apply the projectile's damage
             return true; // Destroy the projectile
         } else {
             this.x += (dx / distance) * this.speed;

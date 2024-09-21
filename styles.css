@@ -1,0 +1,144 @@
+@font-face {
+    font-family: "sofachrome";
+    src: url("Assets/fonts/old_london/sofachrome_rg.otf");
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+.opening-section{
+    height: 100vh;
+    background: black;
+    background-image: url('Assets/Images/Opening.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.game-over{
+    height: 100vh;
+    background: black;
+    background-image: url('Assets/Images/End-game.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    display: none;
+}
+
+h1, #start-button, #final-score{
+    font-family: 'sofachrome';
+    color: red;
+}
+h1{
+    position: absolute;
+    top: 30%;
+    font-size: 30px;
+    font-size: 40px;
+}
+#start-button{
+    position: absolute;
+    top: 50%;
+    left: 2%;
+    transform: translate(0,-50%);
+    font-size: 30px;
+    transition: transform 0.5s ease;
+}
+
+#start-button:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 200px; /* Main content takes remaining space, sidebar is 200px */
+    grid-template-rows: 1fr 50px; /* Main and sidebar take up remaining height, footer is 50px */
+    height: 100vh; /* Full viewport height */
+}
+
+.main-content {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: #f4f4f4;
+    padding: 0; /* Remove padding to make the canvas take full space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    background-color: #ccc;
+    padding: 20px;
+}
+
+.footer {
+    grid-column: 1 / 3; /* Footer spans across both columns */
+    grid-row: 2 / 3;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    line-height: 50px; /* Vertically center the text */
+}
+
+.counters{
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    margin-left: 250px
+}
+
+.tower-image-and-stats{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tower-stats p{
+    color: red;
+    justify-items: center;
+}
+
+
+.alerts{
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.alerts  p{
+    background: red;
+    color: black;
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    column-gap: 250px
+}
+
+canvas {
+    display: block;
+    background: green;
+    width: 100%;
+    height: 100%;
+}
+
+.no-tower-selected, .no-money{
+    display: none;
+}
+
+ .game-section{
+    display: none;
+} 
+
+.selected{
+    background: black;
+    padding: 5px;
+}

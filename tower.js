@@ -1,39 +1,63 @@
 const gridSize = 50;
 
-// Load the tower image globally
-const towerImage = new Image();
-towerImage.src = 'Assets/Images/Mud-Tower.png';
-let towerImageLoaded = false;
+// Load the tower images globally
+const towerImages = {
+    mud: new Image(),
+    medieval: new Image(),
+};
 
-// Set a global flag when the image has loaded
-towerImage.onload = () => {
-    towerImageLoaded = true;
+towerImages.mud.src = 'Assets/Images/Mud-Tower.png';
+towerImages.medieval.src = 'Assets/Images/Medieval-Tower.png';
+
+let towerImagesLoaded = {
+    mud: false,
+    medieval: false,
+};
+
+// Set flags when the images have loaded
+towerImages.mud.onload = () => {
+    towerImagesLoaded.mud = true;
+};
+towerImages.medieval.onload = () => {
+    towerImagesLoaded.medieval = true;
 };
 
 class Tower {
-    constructor(x, y) {
+    constructor(x, y, type = 'mud') { // Default to 'mud' tower
         this.x = x;
         this.y = y;
+        this.type = type;
         this.range = 100;
-        this.fireRate = 30;
+
+        // Set fire rate and damage based on the tower type
+        if (this.type === 'mud') {
+            this.fireRate = 30;
+            this.projectileDamage = 50; // Damage for mud tower
+        } else if (this.type === 'medieval') {
+            this.fireRate = 60;
+            this.projectileDamage = 100; // Damage for medieval tower
+        }
+        
         this.fireCooldown = 0;
 
-        // Default to the grid size
+        // Load the appropriate image and aspect ratio
+        this.image = towerImages[this.type];
+        this.imageLoaded = towerImagesLoaded[this.type];
+
+        // Default size
         this.width = gridSize;
         this.height = gridSize;
 
-        // Ensure the aspect ratio is preserved based on the image
-        if (towerImageLoaded) {
-            const aspectRatio = towerImage.width / towerImage.height;
-            this.width = gridSize; // Use gridSize as the base width
-            this.height = gridSize / aspectRatio; // Calculate height based on aspect ratio
+        if (this.imageLoaded) {
+            const aspectRatio = this.image.width / this.image.height;
+            this.height = gridSize / aspectRatio; // Adjust height based on aspect ratio
         }
     }
 
     draw() {
         // Only draw the tower if the image has fully loaded
-        if (towerImageLoaded) {
-            ctx.drawImage(towerImage, this.x, this.y, this.width, this.height);
+        if (towerImagesLoaded[this.type]) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         }
     }
 
@@ -41,14 +65,19 @@ class Tower {
         if (this.fireCooldown === 0) {
             let target = this.getTarget();
             if (target) {
-                projectiles.push(new Projectile(this.x + this.width / 2, this.y + this.height / 2, target));
+                projectiles.push(new Projectile(
+                    this.x + this.width / 2, 
+                    this.y + this.height / 2, 
+                    target, 
+                    this.projectileDamage // Pass the appropriate damage
+                ));
                 this.fireCooldown = this.fireRate;
             }
         } else {
             this.fireCooldown--;
         }
     }
-
+    
     getTarget() {
         return enemies.find(enemy => {
             const dx = (enemy.x + enemy.size / 2) - (this.x + this.width / 2);
@@ -57,4 +86,9 @@ class Tower {
             return distance < this.range;
         });
     }
+}
+
+// Function to choose tower type (can be attached to UI or input)
+function createTower(x, y, type) {
+    return new Tower(x, y, type);
 }

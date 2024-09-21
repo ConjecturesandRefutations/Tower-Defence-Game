@@ -11,9 +11,10 @@ let selectedTower = null;
 // Define the enemy path
 const path = [
     { x: 100, y: -50 },
-    { x: 100, y: 500 },
-    { x: 700, y: 500 },
-    { x: 700, y: -50 }
+    { x: 300, y: 500 },
+    { x: 1000, y: 500 },
+    { x: 1200, y: 700 },
+    { x: 1200, y: -50 }
 ];
 
 // Update the displayed money count
@@ -49,10 +50,27 @@ function drawPath() {
     ctx.stroke();
 }
 
-// Event listener to the tower selection box
-document.querySelector('.standard-tower').addEventListener('click', () => {
-    selectedTower = 'standard'; // Set selectedTower to 'standard' when clicked
-    document.querySelector('.standard-tower').classList.add('selected');
+// Event listener for the Mud Tower selection
+document.querySelector('.mud-tower').addEventListener('click', () => {
+    // Remove the 'selected' class from both towers
+    document.querySelector('.mud-tower').classList.remove('selected');
+    document.querySelector('.medieval-tower').classList.remove('selected');
+    
+    // Set selectedTower to 'mud' and add the 'selected' class to the mud tower
+    selectedTower = 'mud';
+    document.querySelector('.mud-tower').classList.add('selected');
+    noTowerSelected.style.display = 'none';
+});
+
+// Event listener for the Medieval Tower selection
+document.querySelector('.medieval-tower').addEventListener('click', () => {
+    // Remove the 'selected' class from both towers
+    document.querySelector('.mud-tower').classList.remove('selected');
+    document.querySelector('.medieval-tower').classList.remove('selected');
+    
+    // Set selectedTower to 'medieval' and add the 'selected' class to the medieval tower
+    selectedTower = 'medieval';
+    document.querySelector('.medieval-tower').classList.add('selected');
     noTowerSelected.style.display = 'none';
 });
 
@@ -70,35 +88,38 @@ function startGame() {
         enemies.push(new Enemy(path));
     }, 2000);
 
-// Canvas click event for placing towers
-canvas.addEventListener('click', (event) => {
-    if (!selectedTower) {
-        noTowerSelected.style.display = 'block';
-        return;
-    }
-
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    const gridX = Math.floor(x / gridSize) * gridSize;
-    const gridY = Math.floor(y / gridSize) * gridSize;
-
-// Check if the player has enough money to build a tower
-if (money >= 10) {
-    // Place the selected tower
-    towers.push(new Tower(gridX, gridY));
-    // Reduce money by the cost of the tower
-    money -= 10;
-    updateMoneyDisplay();
-} else {
-    noMoney.style.display = 'block';
-    // Set timeout to hide the element after 3 seconds (3000ms)
-    setTimeout(() => {
-        noMoney.style.display = 'none';
-    }, 3000);
-}
-});
+    canvas.addEventListener('click', (event) => {
+        if (!selectedTower) {
+            noTowerSelected.style.display = 'block';
+            return;
+        }
+    
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+    
+        const gridX = Math.floor(x / gridSize) * gridSize;
+        const gridY = Math.floor(y / gridSize) * gridSize;
+    
+        // Determine the cost based on the selected tower type
+        let towerCost = selectedTower === 'medieval' ? 20 : 10;
+    
+        // Check if the player has enough money to build the selected tower
+        if (money >= towerCost) {
+            // Place the selected tower (Mud or Medieval based on selectedTower)
+            towers.push(new Tower(gridX, gridY, selectedTower)); // Pass selectedTower as type
+            // Reduce money by the cost of the tower
+            money -= towerCost;
+            updateMoneyDisplay();
+        } else {
+            noMoney.style.display = 'block';
+            // Set timeout to hide the element after 3 seconds (3000ms)
+            setTimeout(() => {
+                noMoney.style.display = 'none';
+            }, 3000);
+        }
+    });    
+    
 
     // Start the game loop
     gameLoop();
