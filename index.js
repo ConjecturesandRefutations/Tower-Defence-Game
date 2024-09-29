@@ -103,23 +103,25 @@ function startGame() {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
     
-        const gridX = Math.floor(x / gridSize) * gridSize;
-        const gridY = Math.floor(y / gridSize) * gridSize;
+        // Use the exact cursor position without snapping to grid
+        const towerX = cursorX - (selectedTower === 'medieval' ? 25 : 26);  // Offset to center the tower correctly
+        const towerY = cursorY - (selectedTower === 'medieval' ? 47.5 : 32.5); // Adjust for each tower's height
     
         let towerCost = selectedTower === 'medieval' ? 20 : 10;
     
         if (money >= towerCost) {
-            towers.push(new Tower(gridX, gridY, selectedTower));
+            towers.push(new Tower(towerX, towerY, selectedTower));  // Use towerX and towerY directly for placement
             money -= towerCost;
             updateMoneyDisplay();
             isPlacingTower = false;  // Stop showing the tower after placing
+            selectedTower = null;
         } else {
             noMoney.style.display = 'block';
             setTimeout(() => {
                 noMoney.style.display = 'none';
             }, 3000);
         }
-    });    
+    });      
     
     canvas.addEventListener('mousemove', (event) => {
         const rect = canvas.getBoundingClientRect();
