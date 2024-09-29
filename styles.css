@@ -3,6 +3,11 @@
     src: url("Assets/fonts/old_london/sofachrome_rg.otf");
   }
 
+  @font-face {
+    font-family: "old-london";
+    src: url("Assets/fonts/old_london/Olondona.otf");
+  }
+
 * {
     margin: 0;
     padding: 0;
@@ -30,7 +35,7 @@ html, body {
     display: none;
 }
 
-h1, #start-button, #final-score{
+h1, #start-button, #final-score, #died{
     font-family: 'sofachrome';
     color: red;
 }
@@ -51,7 +56,18 @@ h1{
 
 #start-button:hover{
     cursor: pointer;
-    transform: scale(1.1);
+}
+
+#died{
+    position: absolute;
+    top: 30%;
+    font-size: 40px;
+}
+#final-score{
+    position: absolute;
+    top: 50%;
+    transform: translate(0,-50%);
+    font-size: 50px;
 }
 
 .container {
@@ -141,4 +157,18 @@ canvas {
 .selected{
     background: black;
     padding: 5px;
+}
+
+.counters div{
+    font-size: 35px;
+    font-family: 'old-london';
+}
+#scoreCount{
+    color: white;
+}
+#moneyCount{
+    color: gold;
+}
+#healthCount{
+    color: red;
 }

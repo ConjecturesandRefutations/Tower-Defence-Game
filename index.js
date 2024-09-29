@@ -8,6 +8,11 @@ let score = 0; // Start with 0 score
 
 let selectedTower = null;
 
+let cursorX = 0;
+let cursorY = 0;
+let isPlacingTower = false; // Check if the player is placing a tower
+let towerImage = new Image(); // Image for the selected tower
+
 // Define the enemy path
 const path = [
     { x: 100, y: -50 },
@@ -101,24 +106,33 @@ function startGame() {
         const gridX = Math.floor(x / gridSize) * gridSize;
         const gridY = Math.floor(y / gridSize) * gridSize;
     
-        // Determine the cost based on the selected tower type
         let towerCost = selectedTower === 'medieval' ? 20 : 10;
     
-        // Check if the player has enough money to build the selected tower
         if (money >= towerCost) {
-            // Place the selected tower (Mud or Medieval based on selectedTower)
-            towers.push(new Tower(gridX, gridY, selectedTower)); // Pass selectedTower as type
-            // Reduce money by the cost of the tower
+            towers.push(new Tower(gridX, gridY, selectedTower));
             money -= towerCost;
             updateMoneyDisplay();
+            isPlacingTower = false;  // Stop showing the tower after placing
         } else {
             noMoney.style.display = 'block';
-            // Set timeout to hide the element after 3 seconds (3000ms)
             setTimeout(() => {
                 noMoney.style.display = 'none';
             }, 3000);
         }
     });    
+    
+    canvas.addEventListener('mousemove', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        cursorX = event.clientX - rect.left;
+        cursorY = event.clientY - rect.top;
+    
+        if (selectedTower) {
+            isPlacingTower = true;
+            towerImage.src = selectedTower === 'medieval' ? 'Assets/Images/Medieval-Tower.png' : 'Assets/Images/Mud-Tower.png';
+        } else {
+            isPlacingTower = false;
+        }
+    });
     
 
     // Start the game loop
@@ -136,7 +150,7 @@ function gameLoop() {
 
     if (health <= 0) {
         gameOver();
-        return; // Stop the game loop
+        return;
     }
 
     // Draw the path
@@ -150,10 +164,10 @@ function gameLoop() {
 
         if (enemy.health <= 0) {
             if (!enemy.reachedEnd) {
-                score += 1;  // Increase score if the enemy was destroyed by a projectile
-                updateScoreDisplay();  // Update the score display on the screen
+                score += 1;
+                updateScoreDisplay();
             }
-            enemies.splice(i, 1);  // Remove the enemy directly if health is 0
+            enemies.splice(i, 1);
         }
     }
 
@@ -166,6 +180,22 @@ function gameLoop() {
     // Draw and move projectiles
     projectiles = projectiles.filter(projectile => !projectile.move());
     projectiles.forEach(projectile => projectile.draw());
+
+    // Draw the selected tower following the cursor with washed-out effect
+    if (isPlacingTower) {
+        // Set transparency for washed-out effect
+        ctx.globalAlpha = 0.5;
+    
+        // Use the dimensions based on the selected tower type
+        const towerWidth = selectedTower === 'medieval' ? 50 : 52;  // Match with the placed tower's width
+        const towerHeight = selectedTower === 'medieval' ? 95 : 65; // Match with the placed tower's height
+    
+        // Draw the tower image following the cursor with the correct size
+        ctx.drawImage(towerImage, cursorX - (towerWidth / 2), cursorY - (towerHeight / 2), towerWidth, towerHeight);
+    
+        // Reset transparency
+        ctx.globalAlpha = 1.0;
+    }
 
     requestAnimationFrame(gameLoop);
 }
