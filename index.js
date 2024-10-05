@@ -1,3 +1,5 @@
+//Key Variables
+
 let towers = [];
 let enemies = [];
 let projectiles = [];
@@ -93,49 +95,137 @@ function startGame() {
         enemies.push(new Enemy(path));
     }, 2000);
 
-    canvas.addEventListener('click', (event) => {
-        if (!selectedTower) {
-            noTowerSelected.style.display = 'block';
-            return;
-        }
     
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+// Function to test if a point (x, y) is inside a polygon
+function isPointInPolygon(polygon, x, y) {
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const xi = polygon[i].x, yi = polygon[i].y;
+        const xj = polygon[j].x, yj = polygon[j].y;
+
+        const intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}
+
+// Helper function to generate polygon points around the path
+function generatePathPolygon(path, width) {
+    const halfWidth = width / 2;
+    const polygon = [];
+
+    for (let i = 1; i < path.length; i++) {
+        const start = path[i - 1];
+        const end = path[i];
+        
+        // Calculate perpendicular vectors
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const offsetX = (dy / len) * halfWidth;
+        const offsetY = -(dx / len) * halfWidth;
+
+        // Add points to the polygon
+        polygon.push({ x: start.x + offsetX, y: start.y + offsetY });
+        polygon.push({ x: end.x + offsetX, y: end.y + offsetY });
+    }
+
+    // Close the polygon by adding reverse offset points
+    for (let i = path.length - 1; i > 0; i--) {
+        const start = path[i - 1];
+        const end = path[i];
+        
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const offsetX = -(dy / len) * halfWidth;
+        const offsetY = (dx / len) * halfWidth;
+
+        polygon.push({ x: end.x + offsetX, y: end.y + offsetY });
+        polygon.push({ x: start.x + offsetX, y: start.y + offsetY });
+    }
+
+    return polygon;
+}
+
+// Adjust the isTowerOnPath to check against the generated path polygon
+function isTowerOnPath(towerX, towerY, towerWidth, towerHeight) {
+    const towerCenterX = towerX + towerWidth / 2;
+    const towerCenterY = towerY + towerHeight / 2;
     
-        // Use the exact cursor position without snapping to grid
-        const towerX = cursorX - (selectedTower === 'medieval' ? 25 : 26);  // Offset to center the tower correctly
-        const towerY = cursorY - (selectedTower === 'medieval' ? 47.5 : 32.5); // Adjust for each tower's height
+    // Generate the path polygon
+    const pathPolygon = generatePathPolygon(path, 50); // 50 is the path width
     
-        let towerCost = selectedTower === 'medieval' ? 20 : 10;
+    // Check if the tower's center is inside the path polygon
+    return isPointInPolygon(pathPolygon, towerCenterX, towerCenterY);
+}
+
+canvas.addEventListener('click', (event) => {
+    if (!selectedTower) {
+        noTowerSelected.style.display = 'block';
+        return;
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Use the exact cursor position without snapping to grid
+    const towerX = cursorX - (selectedTower === 'medieval' ? 25 : 26);
+    const towerY = cursorY - (selectedTower === 'medieval' ? 47.5 : 32.5);    
     
-        if (money >= towerCost) {
-            towers.push(new Tower(towerX, towerY, selectedTower));  // Use towerX and towerY directly for placement
-            money -= towerCost;
-            updateMoneyDisplay();
-            isPlacingTower = false;  // Stop showing the tower after placing
-            selectedTower = null;
-        } else {
-            noMoney.style.display = 'block';
-            setTimeout(() => {
-                noMoney.style.display = 'none';
-            }, 3000);
-        }
-    });      
+    // Define tower dimensions based on the type
+    const towerWidth = selectedTower === 'medieval' ? 50 : 52;
+    const towerHeight = selectedTower === 'medieval' ? 95 : 65;
+
+    let towerCost = selectedTower === 'medieval' ? 20 : 10;
+
+    // Check if the tower is on the path
+    if (isTowerOnPath(towerX, towerY, towerWidth, towerHeight)) {
+        alert('You cannot place the tower on the path!');
+        return; // Prevent tower placement
+    }
+
+    if (money >= towerCost) {
+        towers.push(new Tower(towerX, towerY, selectedTower));  // Use towerX and towerY directly for placement
+        money -= towerCost;
+        updateMoneyDisplay();
+        isPlacingTower = false;  // Stop showing the tower after placing
+        selectedTower = null;
+    } else {
+        noMoney.style.display = 'block';
+        setTimeout(() => {
+            noMoney.style.display = 'none';
+        }, 3000);
+    }
+});
     
-    canvas.addEventListener('mousemove', (event) => {
-        const rect = canvas.getBoundingClientRect();
-        cursorX = event.clientX - rect.left;
-        cursorY = event.clientY - rect.top;
+canvas.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    cursorX = event.clientX - rect.left;
+    cursorY = event.clientY - rect.top;
+
+    if (selectedTower) {
+        isPlacingTower = true;
+        towerImage.src = selectedTower === 'medieval' ? 'Assets/Images/Medieval-Tower.png' : 'Assets/Images/Mud-Tower.png';
+    } else {
+        isPlacingTower = false;
+    }
     
-        if (selectedTower) {
-            isPlacingTower = true;
-            towerImage.src = selectedTower === 'medieval' ? 'Assets/Images/Medieval-Tower.png' : 'Assets/Images/Mud-Tower.png';
-        } else {
-            isPlacingTower = false;
-        }
-    });
-    
+    // Check if the tower is hovering over the path
+    const towerX = cursorX - (selectedTower === 'medieval' ? 25 : 26);
+    const towerY = cursorY - (selectedTower === 'medieval' ? 47.5 : 32.5);
+    const towerWidth = selectedTower === 'medieval' ? 50 : 52;
+    const towerHeight = selectedTower === 'medieval' ? 95 : 65;
+
+    // Set a flag if the tower is hovering over the path
+    if (isTowerOnPath(towerX, towerY, towerWidth, towerHeight)) {
+        ctx.isTowerOverPath = true;  // Custom flag for drawing the tower red
+    } else {
+        ctx.isTowerOverPath = false; // Default state
+    }
+});
 
     // Start the game loop
     gameLoop();
@@ -183,20 +273,29 @@ function gameLoop() {
     projectiles = projectiles.filter(projectile => !projectile.move());
     projectiles.forEach(projectile => projectile.draw());
 
-    // Draw the selected tower following the cursor with washed-out effect
+    // Draw the selected tower following the cursor with color change based on path hover
     if (isPlacingTower) {
         // Set transparency for washed-out effect
         ctx.globalAlpha = 0.5;
     
         // Use the dimensions based on the selected tower type
-        const towerWidth = selectedTower === 'medieval' ? 50 : 52;  // Match with the placed tower's width
-        const towerHeight = selectedTower === 'medieval' ? 95 : 65; // Match with the placed tower's height
+        const towerWidth = selectedTower === 'medieval' ? 50 : 52;
+        const towerHeight = selectedTower === 'medieval' ? 95 : 65;
     
-        // Draw the tower image following the cursor with the correct size
+        // Check if the tower is over the path and set the color accordingly
+        if (ctx.isTowerOverPath) {
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'; // Red with transparency
+        } else {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Default washed-out white
+        }
+
+        // Draw the tower image following the cursor
+        ctx.fillRect(cursorX - (towerWidth / 2), cursorY - (towerHeight / 2), towerWidth, towerHeight);
         ctx.drawImage(towerImage, cursorX - (towerWidth / 2), cursorY - (towerHeight / 2), towerWidth, towerHeight);
     
-        // Reset transparency
+        // Reset transparency and fill color
         ctx.globalAlpha = 1.0;
+        ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     }
 
     requestAnimationFrame(gameLoop);

@@ -25,11 +25,7 @@ window.addEventListener('resize', resizeCanvas);
 function rescaleGame(prevWidth, prevHeight, newWidth, newHeight) {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Scale your game elements here based on the new canvas size
-    // You can scale elements, towers, enemies, etc., accordingly.
     
-    // Example: Fill the resized canvas again with a green background
     ctx.fillStyle = 'green';
     ctx.fillRect(0, 0, newWidth, newHeight);
 
