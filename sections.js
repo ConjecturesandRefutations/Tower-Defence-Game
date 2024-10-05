@@ -3,6 +3,7 @@ const gameSection = document.querySelector('.game-section');
 const gameOverSection = document.querySelector('.game-over');
 const noTowerSelected = document.querySelector('.no-tower-selected');
 const noMoney = document.querySelector('.no-money');
+const towerOnPath = document.querySelector('.tower-on-path');
 
 window.onload = () => {
     const startButton = document.getElementById('start-button');

@@ -183,7 +183,10 @@ canvas.addEventListener('click', (event) => {
 
     // Check if the tower is on the path
     if (isTowerOnPath(towerX, towerY, towerWidth, towerHeight)) {
-        alert('You cannot place the tower on the path!');
+        towerOnPath.style.display = 'block';
+        setTimeout(() => {
+            towerOnPath.style.display = 'none';
+        }, 3000);
         return; // Prevent tower placement
     }
 

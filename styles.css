@@ -56,6 +56,7 @@ h1{
 
 #start-button:hover{
     cursor: pointer;
+    color: blue;
 }
 
 #died{
@@ -114,6 +115,11 @@ h1{
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
+}
+
+.tower-image-and-stats:hover{
+    background: whitesmoke;
 }
 
 .tower-stats p{
@@ -146,7 +152,7 @@ canvas {
     height: 100%;
 }
 
-.no-tower-selected, .no-money{
+.no-tower-selected, .no-money, .tower-on-path{
     display: none;
 }
 
@@ -171,4 +177,13 @@ canvas {
 }
 #healthCount{
     color: red;
+}
+
+.select-heading{
+    font-size: 30px;
+    text-shadow: 
+        1px 1px 2px #000000,  /* Dark subtle shadow */
+        0 0 10px rgba(0, 255, 255, 0.7), /* Outer cyan glow */
+        0 0 20px rgba(0, 255, 255, 0.7), 
+        0 0 30px rgba(0, 255, 255, 0.7); /* Additional glow for intensity */
 }
