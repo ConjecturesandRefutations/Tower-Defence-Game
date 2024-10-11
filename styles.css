@@ -21,9 +21,10 @@ html, body {
 .opening-section{
     height: 100vh;
     background: black;
-    background-image: url('Assets/Images/Opening.webp');
+    background-image: url('Assets/Images/logo.png');
     background-position: center;
     background-repeat: no-repeat;
+    background-position: center 20%;
 }
 
 .game-over{
@@ -47,9 +48,9 @@ h1{
 }
 #start-button{
     position: absolute;
-    top: 50%;
-    left: 2%;
-    transform: translate(0,-50%);
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%);
     font-size: 30px;
     transition: transform 0.5s ease;
 }
