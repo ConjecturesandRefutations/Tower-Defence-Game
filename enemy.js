@@ -1,7 +1,7 @@
 class Enemy {
     constructor(path) {
         this.size = 40;
-        this.speed = 2;
+        this.speed = 3;
         this.path = path;
         this.pathIndex = 0;
         this.reachedEnd = false;
