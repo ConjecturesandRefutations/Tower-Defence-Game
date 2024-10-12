@@ -4,9 +4,11 @@ const gameOverSection = document.querySelector('.game-over');
 const noTowerSelected = document.querySelector('.no-tower-selected');
 const noMoney = document.querySelector('.no-money');
 const towerOnPath = document.querySelector('.tower-on-path');
+const restartButton = document.querySelector('.restart'); // Move this inside onload
 
 window.onload = () => {
     const startButton = document.getElementById('start-button');
+    
     startButton.onclick = () => { 
         gameSection.style.display = 'grid'; // Show the main content
         openingSection.style.display = 'none';
@@ -18,6 +20,25 @@ window.onload = () => {
         }, 0);
 
         startGame(); // Start the game
-    };
-};
+    }};
 
+    restartButton.onclick = () => {
+        console.log('Restart button clicked'); // Ensure this logs
+    
+        // Hide the game over section and show the game section
+        gameSection.style.display = 'grid';
+        gameOverSection.style.display = 'none';
+    
+        // Reset the game state
+        resetGame();
+    
+        // Force a repaint and resize the canvas
+        setTimeout(() => {
+            gameSection.offsetHeight;
+            resizeCanvas();
+        }, 0);
+    
+        // Start the game again
+        startGame();
+    };
+    

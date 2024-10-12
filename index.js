@@ -1,5 +1,7 @@
 //Key Variables
 
+let gameInterval; 
+
 let towers = [];
 let enemies = [];
 let projectiles = [];
@@ -304,6 +306,25 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+function resetGame() {
+    // Clear the game state
+    towers = [];
+    enemies = [];
+    projectiles = [];
 
+    // Reset game variables
+    health = 100;
+    money = 100;
+    score = 0;
 
+    // Update UI elements
+    updateMoneyDisplay();
+    updateHealthDisplay();
+    updateScoreDisplay();
 
+    // Clear any existing enemy spawn intervals
+    clearInterval(gameInterval);
+
+    // Clear canvas if needed
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
