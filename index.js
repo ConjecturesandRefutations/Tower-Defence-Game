@@ -166,6 +166,9 @@ function isTowerOnPath(towerX, towerY, towerWidth, towerHeight) {
 canvas.addEventListener('click', (event) => {
     if (!selectedTower) {
         noTowerSelected.style.display = 'block';
+        setTimeout(() => {
+            noTowerSelected.style.display = 'none';
+        }, 3000);
         return;
     }
 
