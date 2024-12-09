@@ -8,16 +8,6 @@
     src: url("Assets/fonts/old_london/Olondona.otf");
   }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    height: 100%;
-}
-
 .opening-section{
     height: 100vh;
     background: black;
@@ -153,12 +143,6 @@ body {
 .alerts  p{
     background: red;
     color: black;
-}
-
-.footer{
-    display: flex;
-    flex-direction: row;
-    column-gap: 250px
 }
 
 canvas {
