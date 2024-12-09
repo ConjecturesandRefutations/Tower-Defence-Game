@@ -93,7 +93,7 @@ body {
 
 .sidebar, .main-content {
     padding: 20px;
-    border-radius: 4px;
+    border-radius: 10px;
 }
 
 .right-sidebar {
@@ -109,11 +109,14 @@ body {
     padding: 20px;
     background: black;
     text-align: center;
-    border-radius: 4px;
+    border-radius: 10px;
 }
 
 .game-canvas{
-    padding: 0
+    padding: 0;
+}
+#gameCanvas{
+    border-radius: 10px;
 }
 
 .counters{
