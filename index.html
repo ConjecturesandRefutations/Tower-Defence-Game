@@ -8,16 +8,16 @@
     <link rel="icon" href="Assets/Images/favicon.png" type="image/png">
 </head>
 <body>
-    
+
     <section class="opening-section">
         <h3 id="start-button">Start Game</h3>
     </section>
 
-    <div class="container game-section">
-        <main class="game-canvas">
+    <div class="grid-container game-section">
+        <main class="main-content game-canvas">
             <canvas id="gameCanvas"></canvas>
-        </main>        
-        <aside class="sidebar">
+        </main>
+        <aside class="sidebar right-sidebar">
             <article class="tower-select">
                 <h4 class="select-heading" style="color: red;">Select Tower</h4>
                 <div class="tower-image-and-stats mud-tower" id="mud-tower">
@@ -39,7 +39,6 @@
             </article>
         </aside>
         <footer class="footer">
-
             <!-- Counters -->
             <div class="info counters">
                 <div id="scoreCount">Score: 0</div>
@@ -63,7 +62,6 @@
             <div class="level-count">
                 <p>Level<span id="levelCount"> 1</span> of 5</p>
             </div>
-
         </footer>
     </div>
 
@@ -73,12 +71,12 @@
         <button class="restart">Restart</button>
         <button class="main-menu">Main Menu</button>
     </section>
-    
-    <script src="canvas.js"></script>
-    <script src="tower.js"></script>
-    <script src="enemy.js"></script>
-    <script src="projectile.js"></script>
-    <script src="index.js"></script>
-    <script src="sections.js"></script>
+
+<script src="canvas.js"></script>
+<script src="tower.js"></script>
+<script src="enemy.js"></script>
+<script src="projectile.js"></script>
+<script src="index.js"></script>
+<script src="sections.js"></script>
 </body>
 </html>
