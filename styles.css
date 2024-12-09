@@ -237,3 +237,9 @@ canvas {
         grid-column: 1 / 2;
     }
 }
+
+@media(max-width:768px){
+    .tower-select{
+        display: flex
+    }
+}

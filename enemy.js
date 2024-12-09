@@ -59,7 +59,7 @@ class Enemy {
     reachEnd() {
         // Reduce the player's health by 10
         if (health > 0) {
-            health -= 10;
+            health += 10;
         }
         updateHealthDisplay();  // Update the health display on the screen
     
